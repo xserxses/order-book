@@ -1,4 +1,4 @@
 <resources>
     <string name="book_label">Order Book</string>
-    <string name="history_label">Trade History</string>
+    <string name="history_label">Trade Records</string>
 </resources>

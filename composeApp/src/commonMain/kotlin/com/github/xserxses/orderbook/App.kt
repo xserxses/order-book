@@ -1,11 +1,9 @@
 package com.github.xserxses.orderbook
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -25,6 +24,9 @@ import androidx.navigation.compose.rememberNavController
 import com.github.xserxses.orderbook.navigation.NewOrder
 import com.github.xserxses.orderbook.navigation.OrderBook
 import com.github.xserxses.orderbook.navigation.TradeRecords
+import com.github.xserxses.orderbook.screen.book.OrderBookScreen
+import com.github.xserxses.orderbook.screen.neworder.NewOrderScreen
+import com.github.xserxses.orderbook.screen.records.TradeHistoryScreen
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -53,18 +55,17 @@ fun App(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
-                    Column {
-                        Text(text = "Order Book screen")
-                        Button(onClick = { navController.navigate(NewOrder) }) {
-                            Text("Go to NewOrder")
-                        }
-                    }
+                    OrderBookScreen(
+                        onNewOrder = {
+                            navController.navigate(NewOrder)
+                        },
+                    )
                 }
                 dialog<NewOrder> {
-                    Text(text = "NewOrder dialog")
+                    NewOrderScreen()
                 }
                 composable<TradeRecords> { backStackEntry ->
-                    Text(text = "TradeRecords screen")
+                    TradeHistoryScreen()
                 }
             }
         }
@@ -84,11 +85,14 @@ fun BottomNav(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
+
         val items =
-            listOf(
-                OrderBook,
-                TradeRecords,
-            )
+            remember {
+                listOf(
+                    OrderBook,
+                    TradeRecords,
+                )
+            }
 
         items.forEach { screen ->
             val isCurrentSelected = currentRoute == screen::class.qualifiedName
