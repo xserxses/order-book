@@ -12,6 +12,9 @@ import org.jetbrains.compose.resources.StringResource
 sealed interface BottomNavItem {
     val icon: DrawableResource
     val label: StringResource
+
+    val route: String?
+        get() = this::class.qualifiedName
 }
 
 @Serializable

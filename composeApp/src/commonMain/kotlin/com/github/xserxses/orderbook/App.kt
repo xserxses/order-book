@@ -27,6 +27,7 @@ import com.github.xserxses.orderbook.navigation.TradeRecords
 import com.github.xserxses.orderbook.screen.book.OrderBookScreen
 import com.github.xserxses.orderbook.screen.neworder.NewOrderScreen
 import com.github.xserxses.orderbook.screen.records.TradeHistoryScreen
+import com.github.xserxses.orderbook.ui.AppFloatingActionButton
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -34,17 +35,29 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
 fun App(modifier: Modifier = Modifier) {
     OrderBookTheme {
         val navController = rememberNavController()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Order Book")
+                        // TODO Better handling for dialogs - should not change top bar title
+                        if (navBackStackEntry?.destination?.route == TradeRecords.route) {
+                            Text("Trade Records")
+                        } else {
+                            Text("Order Book")
+                        }
                     },
+                )
+            },
+            floatingActionButton = {
+                AppFloatingActionButton(
+                    currentRoute = navBackStackEntry?.destination?.route,
+                    onClick = { navController.navigate(NewOrder) },
                 )
             },
             bottomBar = { BottomNav(navController) },
@@ -55,11 +68,7 @@ fun App(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
-                    OrderBookScreen(
-                        onNewOrder = {
-                            navController.navigate(NewOrder)
-                        },
-                    )
+                    OrderBookScreen()
                 }
                 dialog<NewOrder> {
                     NewOrderScreen()
@@ -95,7 +104,7 @@ fun BottomNav(
             }
 
         items.forEach { screen ->
-            val isCurrentSelected = currentRoute == screen::class.qualifiedName
+            val isCurrentSelected = currentRoute == screen.route
             NavigationBarItem(
                 selected = isCurrentSelected,
                 onClick = {
@@ -110,11 +119,19 @@ fun BottomNav(
                 icon = {
                     Icon(
                         imageVector = vectorResource(screen.icon),
-                        contentDescription = null,
+                        contentDescription = stringResource(screen.label),
                     )
                 },
                 label = { Text(text = stringResource(screen.label)) },
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun AppPreview() {
+    OrderBookTheme {
+        App()
     }
 }
