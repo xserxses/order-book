@@ -9,7 +9,6 @@ import orderbook.composeapp.generated.resources.ic_history
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
-
 sealed interface BottomNavItem {
     val icon: DrawableResource
     val label: StringResource

@@ -1,6 +1,5 @@
 package com.github.xserxses.orderbook
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -35,25 +33,24 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun App() {
+fun App(modifier: Modifier = Modifier) {
     OrderBookTheme {
         val navController = rememberNavController()
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
-
                     title = {
                         Text("Order Book")
-                    }
+                    },
                 )
             },
-            bottomBar = { BottomNav(navController) }
+            bottomBar = { BottomNav(navController) },
         ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = OrderBook,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
                     Column {
@@ -75,17 +72,23 @@ fun App() {
 }
 
 @Composable
-fun BottomNav(navController: NavController) {
+fun BottomNav(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+) {
     NavigationBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        val items = listOf(
-            OrderBook, TradeRecords,
-        )
+        val items =
+            listOf(
+                OrderBook,
+                TradeRecords,
+            )
 
         items.forEach { screen ->
             val isCurrentSelected = currentRoute == screen::class.qualifiedName
