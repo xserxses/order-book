@@ -12,6 +12,8 @@
     <string name="price_label">Price</string>
     <string name="place_order_button">Place Order</string>
 
-    <string name="quantity_picker_minus_cd">Minus 1</string>
+    <string name="quantity_picker_minus_cd">Subtract 1</string>
     <string name="quantity_picker_plus_cd">Add 1</string>
+
+    <string name="general_error">Unknown error occurred. Try again later.</string>
 </resources>
