@@ -7,10 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.ktlint)
-}
-
-dependencies{
-    ktlintRuleset(libs.ktlintRuleset)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -37,7 +34,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -48,6 +44,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.jetbrains.navigation.compose)
             implementation(libs.jetbrains.serialization.json)
+            implementation(libs.kotlin.inject.runtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -93,4 +90,10 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    ktlintRuleset(libs.ktlintRuleset)
+
+    kspCommonMainMetadata(libs.kotlin.inject.compiler)
+    add("kspAndroid", libs.kotlin.inject.compiler)
+    add("kspIosArm64", libs.kotlin.inject.compiler)
+    add("kspIosSimulatorArm64", libs.kotlin.inject.compiler)
 }

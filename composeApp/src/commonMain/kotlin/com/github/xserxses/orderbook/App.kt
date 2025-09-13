@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
+import com.github.xserxses.orderbook.di.createKmp
 import com.github.xserxses.orderbook.navigation.NewOrder
 import com.github.xserxses.orderbook.navigation.OrderBook
 import com.github.xserxses.orderbook.navigation.TradeRecords
@@ -39,6 +40,7 @@ fun App(modifier: Modifier = Modifier) {
     OrderBookTheme {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val component = remember { createKmp() }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -74,7 +76,7 @@ fun App(modifier: Modifier = Modifier) {
                     NewOrderScreen()
                 }
                 composable<TradeRecords> { backStackEntry ->
-                    TradeHistoryScreen()
+                    TradeHistoryScreen(component)
                 }
             }
         }
