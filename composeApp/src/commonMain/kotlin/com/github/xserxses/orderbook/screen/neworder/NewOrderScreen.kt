@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.xserxses.orderbook.di.AppComponent
 import com.github.xserxses.orderbook.ui.OrderBookTheme
+import com.github.xserxses.orderbook.ui.model.OrderTypeUi
+import com.github.xserxses.orderbook.ui.model.PricingTypeUi
 import orderbook.composeapp.generated.resources.Res
 import orderbook.composeapp.generated.resources.buy_label
 import orderbook.composeapp.generated.resources.limit_label
@@ -48,6 +50,7 @@ fun NewOrderScreen(
         viewModel {
             NewOrderViewModel(
                 orderRepository = appComponent.provideOrderRepository(),
+                dateTimeProvider = appComponent.provideDateTimeProvider(),
             )
         },
 ) {
@@ -186,6 +189,7 @@ private fun NewOrderScreenContent(
                             onMarketOrder(quantity!!, orderType)
                         }
                     }
+                    onDismiss()
                 },
             ) {
                 Text(text = stringResource(Res.string.place_order_button))

@@ -70,7 +70,9 @@ fun App(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
-                    OrderBookScreen()
+                    OrderBookScreen(
+                        appComponent = component,
+                    )
                 }
                 dialog<NewOrder> {
                     NewOrderScreen(

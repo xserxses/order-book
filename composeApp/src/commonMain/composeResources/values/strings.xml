@@ -3,6 +3,12 @@
     <string name="history_label">Trade Records</string>
     <string name="add_cd">Add</string>
 
+    <string name="spread_label">Spread</string>
+    <string name="best_bid_label">Best Bid</string>
+    <string name="best_ask_label">Best Ask</string>
+    <string name="asks_label">Asks</string>
+    <string name="bids_label">Bids</string>
+
     <string name="new_order_title">Place Order</string>
     <string name="buy_label">Buy</string>
     <string name="sell_label">Sell</string>

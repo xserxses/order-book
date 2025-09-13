@@ -2,6 +2,8 @@ package com.github.xserxses.orderbook.di
 
 import com.github.xserxses.orderbook.repository.order.OrderRepository
 import com.github.xserxses.orderbook.repository.record.TradeRecordRepository
+import com.github.xserxses.orderbook.utils.DateTimeProvider
+import com.github.xserxses.orderbook.utils.DefaultDateTimeProvider
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
 import me.tatarka.inject.annotations.Provides
@@ -21,6 +23,9 @@ abstract class AppComponent {
     @Provides
     @Singleton
     fun provideOrderRepository() = OrderRepository()
+
+    @Provides
+    fun provideDateTimeProvider(): DateTimeProvider = DefaultDateTimeProvider()
 }
 
 @KmpComponentCreate

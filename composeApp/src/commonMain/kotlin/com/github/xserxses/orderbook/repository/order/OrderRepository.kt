@@ -1,12 +1,15 @@
 package com.github.xserxses.orderbook.repository.order
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+
 class OrderRepository {
     private val orders =
         mutableListOf(
             Order(
                 id = 1,
                 quantity = 2,
-                priceType = OrderPriceType.Limit(price = 2.0),
+                priceType = OrderPriceType.Limit(price = 2.0f),
                 type = OrderType.BUY,
                 timestamp = 132456789L,
             ),
@@ -27,7 +30,7 @@ class OrderRepository {
             Order(
                 id = 5,
                 quantity = 23,
-                priceType = OrderPriceType.Limit(price = 3.5),
+                priceType = OrderPriceType.Limit(price = 3.5f),
                 type = OrderType.SELL,
                 timestamp = 123456739L,
             ),
@@ -37,7 +40,7 @@ class OrderRepository {
         orders.add(order)
     }
 
-    suspend fun getAll(): List<Order> = orders
+    fun getAll(): Flow<List<Order>> = flowOf(orders)
 }
 
 data class Order(
@@ -55,7 +58,7 @@ enum class OrderType {
 
 sealed class OrderPriceType {
     data class Limit(
-        val price: Double,
+        val price: Float,
     ) : OrderPriceType()
 
     object Market : OrderPriceType()
