@@ -1,10 +1,14 @@
 package com.github.xserxses.orderbook.screen.records
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.xserxses.orderbook.di.AppComponent
+import com.github.xserxses.orderbook.ui.OrderBookTheme
+import com.github.xserxses.orderbook.ui.composables.ErrorComposable
+import com.github.xserxses.orderbook.ui.composables.LoadingComposable
+import com.github.xserxses.orderbook.ui.model.ScreenState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TradeHistoryScreen(
@@ -17,5 +21,36 @@ fun TradeHistoryScreen(
             )
         },
 ) {
-    Text(text = "TradeRecords screen")
+    TradeHistoryScreenContent(
+        state = viewModel.state.value,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun TradeHistoryScreenContent(
+    state: ScreenState<TradeRecordsUi>,
+    modifier: Modifier = Modifier,
+) {
+    when (state) {
+        is ScreenState.Error<TradeRecordsUi> -> ErrorComposable()
+        is ScreenState.Loading<TradeRecordsUi> -> LoadingComposable()
+        is ScreenState.Ui<TradeRecordsUi> -> TradeHistoryList(state.data.records)
+    }
+}
+
+@Preview
+@Composable
+private fun TradeHistoryScreenContentLoadingPreview() {
+    OrderBookTheme {
+        TradeHistoryScreenContent(ScreenState.Loading())
+    }
+}
+
+@Preview
+@Composable
+private fun TradeHistoryScreenContentErrorPreview() {
+    OrderBookTheme {
+        TradeHistoryScreenContent(ScreenState.Error())
+    }
 }

@@ -33,3 +33,4 @@ in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and r
 ---
 # AI USAGE
 - I've used [Stitch](https://stitch.withgoogle.com/) for prototyping app design
+- Generating Previews for Composable

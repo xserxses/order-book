@@ -2,4 +2,16 @@
     <string name="book_label">Order Book</string>
     <string name="history_label">Trade Records</string>
     <string name="add_cd">Add</string>
+
+    <string name="new_order_title">Place Order</string>
+    <string name="buy_label">Buy</string>
+    <string name="sell_label">Sell</string>
+    <string name="limit_label">Limit</string>
+    <string name="market_label">Market</string>
+    <string name="quantity_label">Quantity</string>
+    <string name="price_label">Price</string>
+    <string name="place_order_button">Place Order</string>
+
+    <string name="quantity_picker_minus_cd">Minus 1</string>
+    <string name="quantity_picker_plus_cd">Add 1</string>
 </resources>

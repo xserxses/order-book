@@ -73,7 +73,12 @@ fun App(modifier: Modifier = Modifier) {
                     OrderBookScreen()
                 }
                 dialog<NewOrder> {
-                    NewOrderScreen()
+                    NewOrderScreen(
+                        appComponent = component,
+                        onDismiss = {
+                            navController.popBackStack()
+                        },
+                    )
                 }
                 composable<TradeRecords> { backStackEntry ->
                     TradeHistoryScreen(component)
