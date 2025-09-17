@@ -9,6 +9,7 @@ import com.github.xserxses.orderbook.repository.order.OrderRepository
 import com.github.xserxses.orderbook.repository.record.TradeRecordRepository
 import com.github.xserxses.orderbook.screen.book.OrderBookScreen
 import com.github.xserxses.orderbook.screen.neworder.NewOrderScreen
+import com.github.xserxses.orderbook.screen.records.TradeHistoryScreen
 import com.github.xserxses.orderbook.utils.DateTimeProvider
 import com.github.xserxses.orderbook.utils.DefaultDateTimeProvider
 import me.tatarka.inject.annotations.Component
@@ -52,6 +53,7 @@ abstract class AppComponent(
     abstract val orderBookScreen: OrderBookScreen
 
     abstract val newOrderScreen: NewOrderScreen
+    abstract val tradeHistoryScreen: TradeHistoryScreen
 }
 
 @KmpComponentCreate

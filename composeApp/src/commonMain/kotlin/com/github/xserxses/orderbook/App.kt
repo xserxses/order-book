@@ -27,7 +27,6 @@ import com.github.xserxses.orderbook.navigation.NewOrder
 import com.github.xserxses.orderbook.navigation.OrderBook
 import com.github.xserxses.orderbook.navigation.TradeRecords
 import com.github.xserxses.orderbook.persistance.AppDatabase
-import com.github.xserxses.orderbook.screen.records.TradeHistoryScreen
 import com.github.xserxses.orderbook.ui.AppFloatingActionButton
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import org.jetbrains.compose.resources.stringResource
@@ -75,7 +74,9 @@ fun App(
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
-                    component.orderBookScreen()
+                    component.orderBookScreen(
+                        Modifier,
+                    )
                 }
                 dialog<NewOrder> {
                     component.newOrderScreen(
@@ -86,7 +87,9 @@ fun App(
                     )
                 }
                 composable<TradeRecords> { backStackEntry ->
-                    TradeHistoryScreen(component)
+                    component.tradeHistoryScreen(
+                        Modifier,
+                    )
                 }
             }
         }
@@ -139,3 +142,5 @@ fun BottomNav(
         }
     }
 }
+
+private const val TAG = "App"

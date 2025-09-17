@@ -20,6 +20,7 @@ ksp = "2.2.0-2.0.2"
 kotlin-inject = "0.8.0"
 room = "2.8.0"
 sqlite = "2.6.0"
+kermit = "2.0.8"
 
 
 [libraries]
@@ -42,6 +43,8 @@ androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.r
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

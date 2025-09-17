@@ -3,26 +3,26 @@ package com.github.xserxses.orderbook.screen.records
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.xserxses.orderbook.di.AppComponent
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import com.github.xserxses.orderbook.ui.composables.ErrorComposable
 import com.github.xserxses.orderbook.ui.composables.LoadingComposable
 import com.github.xserxses.orderbook.ui.model.ScreenState
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+typealias TradeHistoryScreen = @Composable (modifier: Modifier) -> Unit
+
 @Composable
+@Inject
 fun TradeHistoryScreen(
-    appComponent: AppComponent,
-    modifier: Modifier = Modifier,
-    viewModel: TradeRecordsViewModel =
-        viewModel {
-            TradeRecordsViewModel(
-                appComponent.provideTradeRecordRepository(),
-            )
-        },
+    @Assisted modifier: Modifier = Modifier,
+    viewModel: () -> TradeRecordsViewModel,
 ) {
+    val vm = viewModel { viewModel() }
+
     TradeHistoryScreenContent(
-        state = viewModel.state.value,
+        state = vm.state.value,
         modifier = modifier,
     )
 }
@@ -35,7 +35,11 @@ private fun TradeHistoryScreenContent(
     when (state) {
         is ScreenState.Error<TradeRecordsUi> -> ErrorComposable()
         is ScreenState.Loading<TradeRecordsUi> -> LoadingComposable()
-        is ScreenState.Ui<TradeRecordsUi> -> TradeHistoryList(state.data.records)
+        is ScreenState.Ui<TradeRecordsUi> ->
+            TradeHistoryList(
+                records = state.data.records,
+                modifier = modifier,
+            )
     }
 }
 

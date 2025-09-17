@@ -14,7 +14,9 @@ fun TradeHistoryList(
     records: List<TradeRecordUi>,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier,
+    ) {
         items(records.size) { index ->
             TradeHistoryListItem(records[index])
         }
