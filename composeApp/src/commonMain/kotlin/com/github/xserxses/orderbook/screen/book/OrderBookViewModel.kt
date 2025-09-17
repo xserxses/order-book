@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 class OrderBookViewModel(
     orderRepository: OrderRepository,
 ) : ViewModel() {
@@ -43,8 +45,9 @@ class OrderBookViewModel(
                             .map { mapOrderToUi(it) },
                 )
             }.catch { _ -> _state.value = ScreenState.Error() }
-            .onEach { _state.value = ScreenState.Ui(it) }
-            .launchIn(viewModelScope)
+            .onEach {
+                _state.value = ScreenState.Ui(it)
+            }.launchIn(viewModelScope)
     }
 
     private fun mapOrderToUi(order: Order): OrderBookRecordUi {

@@ -26,10 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.xserxses.orderbook.di.AppComponent
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import com.github.xserxses.orderbook.ui.model.OrderTypeUi
 import com.github.xserxses.orderbook.ui.model.PricingTypeUi
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 import orderbook.composeapp.generated.resources.Res
 import orderbook.composeapp.generated.resources.buy_label
 import orderbook.composeapp.generated.resources.limit_label
@@ -40,28 +41,26 @@ import orderbook.composeapp.generated.resources.sell_label
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+typealias NewOrderScreen = @Composable (onDismiss: () -> Unit, modifier: Modifier) -> Unit
+
 @OptIn(ExperimentalMaterial3Api::class)
+@Inject
 @Composable
 fun NewOrderScreen(
-    appComponent: AppComponent,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: NewOrderViewModel =
-        viewModel {
-            NewOrderViewModel(
-                orderRepository = appComponent.provideOrderRepository(),
-                dateTimeProvider = appComponent.provideDateTimeProvider(),
-            )
-        },
+    @Assisted onDismiss: () -> Unit,
+    @Assisted modifier: Modifier = Modifier,
+    viewModel: () -> NewOrderViewModel,
 ) {
+    val vm = viewModel { viewModel() }
+
     NewOrderScreenContent(
         onDismiss = onDismiss,
         modifier = modifier,
         onLimitOrder = { quantity, price, orderType ->
-            viewModel.placeLimitOrder(quantity, price, orderType)
+            vm.placeLimitOrder(quantity, price, orderType)
         },
         onMarketOrder = { quantity, orderType ->
-            viewModel.placeMarketOrder(quantity, orderType)
+            vm.placeMarketOrder(quantity, orderType)
         },
     )
 }
@@ -107,7 +106,7 @@ private fun NewOrderScreenContent(
                         stringResource(Res.string.buy_label),
                         stringResource(Res.string.sell_label),
                     ),
-                onOptionSelected = { type ->
+                onOptionSelect = { type ->
                     orderType = type
                 },
             )
@@ -122,7 +121,7 @@ private fun NewOrderScreenContent(
                         stringResource(Res.string.limit_label),
                         stringResource(Res.string.market_label),
                     ),
-                onOptionSelected = { type ->
+                onOptionSelect = { type ->
                     priceType = type
                 },
             )

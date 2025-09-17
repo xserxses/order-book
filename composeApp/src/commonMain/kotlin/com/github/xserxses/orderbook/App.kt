@@ -21,26 +21,31 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
+import androidx.room.RoomDatabase
 import com.github.xserxses.orderbook.di.createKmp
 import com.github.xserxses.orderbook.navigation.NewOrder
 import com.github.xserxses.orderbook.navigation.OrderBook
 import com.github.xserxses.orderbook.navigation.TradeRecords
-import com.github.xserxses.orderbook.screen.book.OrderBookScreen
-import com.github.xserxses.orderbook.screen.neworder.NewOrderScreen
+import com.github.xserxses.orderbook.persistance.AppDatabase
 import com.github.xserxses.orderbook.screen.records.TradeHistoryScreen
 import com.github.xserxses.orderbook.ui.AppFloatingActionButton
 import com.github.xserxses.orderbook.ui.OrderBookTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(modifier: Modifier = Modifier) {
+fun App(
+    dbBuilder: RoomDatabase.Builder<AppDatabase>,
+    modifier: Modifier = Modifier,
+) {
     OrderBookTheme {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val component = remember { createKmp() }
+        val component =
+            remember {
+                createKmp(dbBuilder)
+            }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -70,16 +75,14 @@ fun App(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable<OrderBook> {
-                    OrderBookScreen(
-                        appComponent = component,
-                    )
+                    component.orderBookScreen()
                 }
                 dialog<NewOrder> {
-                    NewOrderScreen(
-                        appComponent = component,
-                        onDismiss = {
+                    component.newOrderScreen(
+                        {
                             navController.popBackStack()
                         },
+                        Modifier,
                     )
                 }
                 composable<TradeRecords> { backStackEntry ->
@@ -134,13 +137,5 @@ fun BottomNav(
                 label = { Text(text = stringResource(screen.label)) },
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun AppPreview() {
-    OrderBookTheme {
-        App()
     }
 }

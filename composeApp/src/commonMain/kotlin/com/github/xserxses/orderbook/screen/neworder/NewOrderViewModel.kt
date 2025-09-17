@@ -9,7 +9,9 @@ import com.github.xserxses.orderbook.repository.order.OrderType
 import com.github.xserxses.orderbook.ui.model.OrderTypeUi
 import com.github.xserxses.orderbook.utils.DateTimeProvider
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 class NewOrderViewModel(
     private val orderRepository: OrderRepository,
     private val dateTimeProvider: DateTimeProvider,

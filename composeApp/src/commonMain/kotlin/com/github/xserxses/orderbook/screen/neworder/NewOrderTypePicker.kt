@@ -22,7 +22,7 @@ fun <T> NewOrderTypePicker(
     initialValue: T,
     options: List<T>,
     labels: List<String>,
-    onOptionSelected: (T) -> Unit,
+    onOptionSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedOption: T by remember { mutableStateOf(initialValue) }
@@ -37,7 +37,7 @@ fun <T> NewOrderTypePicker(
                 selected = selectedOption == option,
                 onClick = {
                     selectedOption = option
-                    onOptionSelected(option)
+                    onOptionSelect(option)
                 },
                 shape = MaterialTheme.shapes.medium,
             ) {
@@ -58,7 +58,7 @@ private fun NewOrderTypePickerPreview() {
             initialValue = "Buy",
             options = listOf("Buy", "Sell"),
             labels = listOf("Buy", "Sell"),
-            onOptionSelected = {},
+            onOptionSelect = {},
         )
     }
 }
@@ -71,7 +71,7 @@ private fun NewOrderTypePickerPreviewWithDifferentTypes() {
             initialValue = 1,
             options = listOf(1, 2, 3),
             labels = listOf("Option 1", "Option 2", "Option 3"),
-            onOptionSelected = { },
+            onOptionSelect = { },
         )
     }
 }

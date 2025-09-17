@@ -3,25 +3,20 @@ package com.github.xserxses.orderbook.screen.book
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.xserxses.orderbook.di.AppComponent
 import com.github.xserxses.orderbook.ui.composables.ErrorComposable
 import com.github.xserxses.orderbook.ui.composables.LoadingComposable
 import com.github.xserxses.orderbook.ui.model.ScreenState
+import me.tatarka.inject.annotations.Inject
 
+typealias OrderBookScreen = @Composable () -> Unit
+
+@Inject
 @Composable
-fun OrderBookScreen(
-    appComponent: AppComponent,
-    modifier: Modifier = Modifier,
-    viewModel: OrderBookViewModel =
-        viewModel {
-            OrderBookViewModel(
-                orderRepository = appComponent.provideOrderRepository(),
-            )
-        },
-) {
+fun OrderBookScreen(orderBookViewModel: () -> OrderBookViewModel) {
+    val vm = viewModel { orderBookViewModel() }
+
     OrderBookScreenContent(
-        state = viewModel.state.value,
-        modifier,
+        state = vm.state.value,
     )
 }
 

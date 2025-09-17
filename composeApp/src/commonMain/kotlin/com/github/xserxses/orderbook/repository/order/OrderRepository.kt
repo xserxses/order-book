@@ -1,46 +1,38 @@
 package com.github.xserxses.orderbook.repository.order
 
+import com.github.xserxses.orderbook.persistance.dao.OrderDao
+import com.github.xserxses.orderbook.persistance.dao.OrderEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
-class OrderRepository {
-    private val orders =
-        mutableListOf(
-            Order(
-                id = 1,
-                quantity = 2,
-                priceType = OrderPriceType.Limit(price = 2.0f),
-                type = OrderType.BUY,
-                timestamp = 132456789L,
-            ),
-            Order(
-                id = 2,
-                quantity = 33,
-                priceType = OrderPriceType.Market,
-                type = OrderType.BUY,
-                timestamp = 123256789L,
-            ),
-            Order(
-                id = 5,
-                quantity = 23,
-                priceType = OrderPriceType.Market,
-                type = OrderType.SELL,
-                timestamp = 123456739L,
-            ),
-            Order(
-                id = 5,
-                quantity = 23,
-                priceType = OrderPriceType.Limit(price = 3.5f),
-                type = OrderType.SELL,
-                timestamp = 123456739L,
+class OrderRepository(
+    private val orderDao: OrderDao,
+) {
+    suspend fun add(order: Order) {
+        orderDao.insert(
+            OrderEntity(
+                id = order.id,
+                quantity = order.quantity,
+                price = (order.priceType as OrderPriceType.Limit).price,
+                timestamp = order.timestamp,
             ),
         )
-
-    suspend fun add(order: Order) {
-        orders.add(order)
     }
 
-    fun getAll(): Flow<List<Order>> = flowOf(orders)
+    fun getAll(): Flow<List<Order>> =
+        orderDao
+            .getAllAsFlow()
+            .map {
+                it.map {
+                    Order(
+                        id = it.id,
+                        quantity = it.quantity,
+                        priceType = OrderPriceType.Limit(price = it.price),
+                        type = OrderType.BUY,
+                        timestamp = it.timestamp,
+                    )
+                }
+            }
 }
 
 data class Order(
